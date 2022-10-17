@@ -1,0 +1,1 @@
+-O3 -DNDEBUG=1 -ffp-contract=off -O3 -Os   -MMD -MP -MF .d    -fno-omit-frame-pointer  -DWITH_NETBUILDER -s DISABLE_EXCEPTION_CATCHING=0 -s USE_PTHREADS=0    -I/root/omnetpp/include
