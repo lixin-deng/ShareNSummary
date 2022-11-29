@@ -570,6 +570,24 @@ function QtLoader(config)
     function fontDpi() {
         return Module.qtFontDpi;
     }
+	
+	function handlePrintString(ptr: number, len: number) {
+	  const view = new Uint8Array(memory.buffer, ptr, len);
+	  let string = '';
+	  for (let i = 0; i < len; i++) {
+	    string += String.fromCharCode(view[i]);
+	  }
+	  console.log(string);
+	}
+	
+	const env = {
+	  ...
+	  _jsPrintString: handlePrintString,
+	  ...
+	};
+	WebAssembly.instantiate(bytes, { env }).then((result) => {
+	  result.instance.exports._print();
+	});
 
     setStatus("Created");
 
