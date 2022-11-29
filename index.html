@@ -33,6 +33,7 @@
     <canvas id="qtcanvas" oncontextmenu="event.preventDefault()" contenteditable="true"></canvas>
 
     <script type='text/javascript'>
+		
         function init() {
           var spinner = document.querySelector('#qtspinner');
           var canvas = document.querySelector('#qtcanvas');
@@ -66,6 +67,24 @@
           });
           qtLoader.loadEmscriptenModule("project_qt");
       }
+	  
+	  function handlePrintString(ptr: number, len: number) {
+	    const view = new Uint8Array(memory.buffer, ptr, len);
+	    let string = '';
+	    for (let i = 0; i < len; i++) {
+	      string += String.fromCharCode(view[i]);
+	    }
+	    console.log(string);
+	  }
+	  
+	  const env = {
+	    ...
+	    _jsPrintString: handlePrintString,
+	    ...
+	  };
+	  WebAssembly.instantiate(bytes, { env }).then((result) => {
+	    result.instance.exports._print();
+	  });
     </script>
     <script type="text/javascript" src="qtloader.js"></script>
   </body>
