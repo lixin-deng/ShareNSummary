@@ -335,9 +335,8 @@ function QtLoader(config)
             setStatus("Error");
         });
     }
-
+	
     function completeLoadEmscriptenModule(applicationName, emscriptenModuleSource, wasmModule) {
-
         // The wasm binary has been compiled into a module during resource download,
         // and is ready to be instantiated. Define the instantiateWasm callback which
         // emscripten will call to create the instance.

@@ -74,7 +74,7 @@
 		<div class="right">
 			<button id="getSummaries">get summaries</button><br>
 			<script>
-				// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
+			// 	// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
 			getSummaries.onclick = function handlePrintString(ptr, len) {
 				
 			  const view = new Uint8Array(memory.buffer, ptr, len);
@@ -85,20 +85,13 @@
 			  console.log(string);
 			}
 			
-			const env = {
-			  ...
-			  _jsPrintString: handlePrintString,
-			  ...
-			};
 			
-			WebAssembly.instantiate(bytes, { env }).then((result) => {
+			WebAssembly.instantiate(bytes, { _jsPrintString: handlePrintString }).then((result) => {
 			  result.instance.exports._print();
 			});
 		</script>
-
-
-
 		</div>
+		
 	</body>
 </html>
 <script type="module" src="./main.js"></script>
