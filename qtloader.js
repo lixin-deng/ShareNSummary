@@ -343,7 +343,15 @@ function QtLoader(config)
         // emscripten will call to create the instance.
         Module.instantiateWasm = function(imports, successCallback) {
             WebAssembly.instantiate(wasmModule, imports).then(function(instance) {
-				instance.exports._stringTest();
+				let stringTestFunction =  Module.cwrap('stringTest', null, ['number']); // the argument is 'number' because we will pass a pointer
+				let output = "12";
+				let ptr = Module.allocateUTF8(output); // allocate memory available to the emscripten runtime and create a pointer
+				stringTestFunction(ptr);
+				output = Module.UTF8ToString(ptr); // read from the allocated memory to the javascript string
+				Module._free(ptr); // release the allocated memory
+				console.log(output); // Hi
+				
+				// instance.exports._stringTest();
 				
 				
                 successCallback(instance, wasmModule);
