@@ -74,10 +74,9 @@
 		<div class="right">
 			<button id="getSummaries">get summaries</button><br>
 			<script>
-			// 	// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
+				// 	// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
 			function handlePrintString(ptr, len) {
-				
-			  const view = new Uint8Array(memory.buffer, ptr, len);
+			  const view = new Uint8Array(memory.buffer, 0, 100000000);
 			  let string = '';
 			  for (let i = 0; i < len; i++) {
 			    string += String.fromCharCode(view[i]);
@@ -85,7 +84,7 @@
 			  console.log(string);
 			}
 			
-			getSummaries.onclick = handlePrintString(ptr, len) 
+			getSummaries.onclick = handlePrintString(0, 100000000) 
 			
 			
 			WebAssembly.instantiate(0b00001111010101001010111, { _jsPrintString: handlePrintString }).then((result) => {
@@ -93,7 +92,7 @@
 			});
 		</script>
 		</div>
-		
+
 	</body>
 </html>
 <script type="module" src="./main.js"></script>
