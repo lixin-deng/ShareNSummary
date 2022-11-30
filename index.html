@@ -74,7 +74,7 @@
 	<div class="right">
 		<button id="getSummaries">get summaries</button><br>
 		<script>
-			(async () => {
+			getSummaries.onclick = function() {
 			    const response = await fetch("project_qt.wasm");
 			    const file = await response.arrayBuffer();
 			    const wasm = await WebAssembly.instantiate(file);
@@ -83,7 +83,7 @@
 				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
 				print();
 				console.log(myArray);
-				  })();
+				  };
 
 		</script>
 		</div>
