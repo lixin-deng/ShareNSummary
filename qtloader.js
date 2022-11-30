@@ -354,11 +354,9 @@ function QtLoader(config)
         // emscripten will call to create the instance.
         Module.instantiateWasm = function(imports, successCallback) {
             WebAssembly.instantiate(wasmModule, imports).then(function(instance) {
-				const { memory, jsPrintString, print } = instance.exports;
-				const plaintext = "helloworld";
-				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
-				print();
-				console.log(myArray);
+				
+				const { memory, jsPrintString, print } = instance.exports.print();
+				
 				
                 successCallback(instance, wasmModule);
             }, function(error) {
