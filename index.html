@@ -78,6 +78,15 @@
 			    const response = fetch("project_qt.wasm");
 			    const file = response.arrayBuffer();
 			    const wasm = WebAssembly.instantiate(file);
+				
+				// var wasmModule = undefined;
+				// var wasmModulePromise = fetchCompileWasm("project_qt.wasm").then(function (module) {
+				//     wasmModule = module;
+				// });
+				
+				
+				
+				
 			    const { memory, jsPrintString, print } = wasm.instance.exports;
 				const plaintext = "helloworld";
 				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
