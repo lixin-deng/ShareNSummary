@@ -589,8 +589,6 @@ function QtLoader(config)
     function fontDpi() {
         return Module.qtFontDpi;
     }
-	
-	
 
     setStatus("Created");
 
