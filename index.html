@@ -86,7 +86,7 @@
 			}
 			
 			
-			WebAssembly.instantiate(bytes, { _jsPrintString: handlePrintString }).then((result) => {
+			WebAssembly.instantiate(0b00001111010101001010111, { _jsPrintString: handlePrintString() }).then((result) => {
 			  result.instance.exports._print();
 			});
 		</script>
