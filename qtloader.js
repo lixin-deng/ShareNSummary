@@ -247,6 +247,16 @@ function QtLoader(config)
     function fetchResource(filePath) {
         var fullPath = config.path + filePath;
         return fetch(fullPath).then(function(response) {
+			const file = response.arrayBuffer();
+			const wasm = WebAssembly.instantiate(file);
+			const { memory, jsPrintString, print } = wasm.instance.exports;
+			const plaintext = "helloworld";
+			const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
+			print();
+			console.log(myArray);
+			
+			
+			
             if (!response.ok) {
                 self.error = response.status + " " + response.statusText + " " + response.url;
                 setStatus("Error");
@@ -259,6 +269,7 @@ function QtLoader(config)
 
     function fetchText(filePath) {
         return fetchResource(filePath).then(function(response) {
+			
             return response.text();
         });
     }
@@ -288,6 +299,13 @@ function QtLoader(config)
             }
         });
     }
+	
+	
+	
+	
+	
+	
+	
 
     function loadEmscriptenModule(applicationName) {
 
