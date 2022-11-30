@@ -22,7 +22,7 @@
     </style>
   </head>
   <body onload="init()">
-	  <div class="left">
+	   <div class="left">
     <figure style="overflow:visible;" id="qtspinner">
       <center style="margin-top:1.5em; line-height:150%">
         <img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
@@ -74,35 +74,7 @@
 	<div class="right">
 		<button id="getSummaries">get summaries</button><br>
 		<script>
-			getSummaries.onclick = function() {
-			    const file = fetch("project_qt.wasm").then(function(response) {
-				    if (!response.ok) {
-				        self.error = response.status + " " + response.statusText + " " + response.url;
-				        setStatus("Error");
-				        return Promise.reject(self.error)
-				    } else {
-				        return response.arrayBuffer();
-				    }
-				});
-				
-			    // const file = response.arrayBuffer();
-			    const wasm = WebAssembly.instantiate(file);
-				
-				// var wasmModule = undefined;
-				// var wasmModulePromise = fetchCompileWasm("project_qt.wasm").then(function (module) {
-				//     wasmModule = module;
-				// });
-				
-				
-				
-				
-			    const { memory, jsPrintString, print } = wasm.instance.exports;
-				const plaintext = "helloworld";
-				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
-				print();
-				console.log(myArray);
-				  };
-
+			
 		</script>
 		</div>
   </body>

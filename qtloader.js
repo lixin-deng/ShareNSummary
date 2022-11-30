@@ -247,9 +247,6 @@ function QtLoader(config)
     function fetchResource(filePath) {
         var fullPath = config.path + filePath;
         return fetch(fullPath).then(function(response) {
-			
-			
-			
             if (!response.ok) {
                 self.error = response.status + " " + response.statusText + " " + response.url;
                 setStatus("Error");
@@ -262,7 +259,6 @@ function QtLoader(config)
 
     function fetchText(filePath) {
         return fetchResource(filePath).then(function(response) {
-			
             return response.text();
         });
     }
@@ -292,13 +288,6 @@ function QtLoader(config)
             }
         });
     }
-	
-	
-	
-	
-	
-	
-	
 
     function loadEmscriptenModule(applicationName) {
 
@@ -354,10 +343,6 @@ function QtLoader(config)
         // emscripten will call to create the instance.
         Module.instantiateWasm = function(imports, successCallback) {
             WebAssembly.instantiate(wasmModule, imports).then(function(instance) {
-				
-				instance.exports._print();
-				
-				
                 successCallback(instance, wasmModule);
             }, function(error) {
                 self.error = error;
@@ -365,7 +350,7 @@ function QtLoader(config)
             });
             return {};
         };
-		
+
         Module.locateFile = Module.locateFile || function(filename) {
             return config.path + filename;
         };
