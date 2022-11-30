@@ -75,9 +75,9 @@
 		<button id="getSummaries">get summaries</button><br>
 		<script>
 			getSummaries.onclick = function() {
-			    const response = await fetch("project_qt.wasm");
-			    const file = await response.arrayBuffer();
-			    const wasm = await WebAssembly.instantiate(file);
+			    const response = fetch("project_qt.wasm");
+			    const file = response.arrayBuffer();
+			    const wasm = WebAssembly.instantiate(file);
 			    const { memory, jsPrintString, print } = wasm.instance.exports;
 				const plaintext = "helloworld";
 				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
