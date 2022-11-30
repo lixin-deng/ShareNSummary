@@ -335,9 +335,28 @@ function QtLoader(config)
             setStatus("Error");
         });
     }
+	
+	
+	// function handlePrintString(ptr: number, len: number) {
+	//   const view = new Uint8Array(memory.buffer, ptr, len);
+	//   let string = '';
+	//   for (let i = 0; i < len; i++) {
+	//     string += String.fromCharCode(view[i]);
+	//   }
+	//   console.log(string);
+	// }
+	
+	// const env = {
+	//   ...
+	//   _jsPrintString: handlePrintString,
+	//   ...
+	// };
+	// WebAssembly.instantiate(bytes, { env }).then((result) => {
+	//   result.instance.exports._print();
+	// });
+	
 
     function completeLoadEmscriptenModule(applicationName, emscriptenModuleSource, wasmModule) {
-
         // The wasm binary has been compiled into a module during resource download,
         // and is ready to be instantiated. Define the instantiateWasm callback which
         // emscripten will call to create the instance.
@@ -571,23 +590,7 @@ function QtLoader(config)
         return Module.qtFontDpi;
     }
 	
-	function handlePrintString(ptr: number, len: number) {
-	  const view = new Uint8Array(memory.buffer, ptr, len);
-	  let string = '';
-	  for (let i = 0; i < len; i++) {
-	    string += String.fromCharCode(view[i]);
-	  }
-	  console.log(string);
-	}
 	
-	const env = {
-	  ...
-	  _jsPrintString: handlePrintString,
-	  ...
-	};
-	WebAssembly.instantiate(bytes, { env }).then((result) => {
-	  result.instance.exports._print();
-	});
 
     setStatus("Created");
 
