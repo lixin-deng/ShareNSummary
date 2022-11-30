@@ -247,13 +247,6 @@ function QtLoader(config)
     function fetchResource(filePath) {
         var fullPath = config.path + filePath;
         return fetch(fullPath).then(function(response) {
-			const file = response.arrayBuffer();
-			const wasm = WebAssembly.instantiate(file);
-			const { memory, jsPrintString, print } = wasm.instance.exports;
-			const plaintext = "helloworld";
-			const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
-			print();
-			console.log(myArray);
 			
 			
 			
@@ -361,6 +354,12 @@ function QtLoader(config)
         // emscripten will call to create the instance.
         Module.instantiateWasm = function(imports, successCallback) {
             WebAssembly.instantiate(wasmModule, imports).then(function(instance) {
+				const { memory, jsPrintString, print } = instance.exports;
+				const plaintext = "helloworld";
+				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
+				print();
+				console.log(myArray);
+				
                 successCallback(instance, wasmModule);
             }, function(error) {
                 self.error = error;
