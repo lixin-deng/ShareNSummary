@@ -355,7 +355,7 @@ function QtLoader(config)
         Module.instantiateWasm = function(imports, successCallback) {
             WebAssembly.instantiate(wasmModule, imports).then(function(instance) {
 				
-				const { memory, jsPrintString, print } = instance.exports._print();
+				instance.exports._print();
 				
 				
                 successCallback(instance, wasmModule);
