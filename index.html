@@ -75,7 +75,7 @@
 			<button id="getSummaries">get summaries</button><br>
 			<script>
 			// 	// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
-			getSummaries.onclick = function handlePrintString(ptr, len) {
+			function handlePrintString(ptr, len) {
 				
 			  const view = new Uint8Array(memory.buffer, ptr, len);
 			  let string = '';
@@ -84,6 +84,8 @@
 			  }
 			  console.log(string);
 			}
+			
+			getSummaries.onclick = handlePrintString(ptr, len) 
 			
 			
 			WebAssembly.instantiate(0b00001111010101001010111, { _jsPrintString: handlePrintString }).then((result) => {
