@@ -75,7 +75,17 @@
 		<button id="getSummaries">get summaries</button><br>
 		<script>
 			getSummaries.onclick = function() {
-			    const response = fetch("project_qt.wasm");
+			    const response = fetch("project_qt.wasm").then(function(response) {
+				    if (!response.ok) {
+				        self.error = response.status + " " + response.statusText + " " + response.url;
+				        setStatus("Error");
+				        return Promise.reject(self.error)
+				    } else {
+				        return response;
+				    }
+				});
+				
+				
 			    const file = response.arrayBuffer();
 			    const wasm = WebAssembly.instantiate(file);
 				
