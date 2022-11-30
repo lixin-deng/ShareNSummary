@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en-us">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-		<!--Set visual viewport size for mobile devices to the device size,
+    <!--Set visual viewport size for mobile devices to the device size,
         witch results in a scale of 1 and a 1:1 mapping between CSS pixels
         and Qt device independent pixels. -->
-		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=0"/>
 
-		<title>project_qt</title>
-		<style>
-			/* Make the html body cover the entire (visual) viewport with no scroll bars. */
+    <title>project_qt</title>
+    <style>
+      /* Make the html body cover the entire (visual) viewport with no scroll bars. */
       html, body { padding: 0; margin: 0; overflow:hidden; height: 100vh }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       canvas { border: 0px none; background-color: white; height:100%; width:100%;  }
@@ -20,80 +20,72 @@
          the default cursor. */
       canvas { outline: 0px solid transparent; caret-color: transparent; cursor:default }
     </style>
-	</head>
-	<body onload="init()">
-		<div class="left">
-			<figure style="overflow:visible;" id="qtspinner">
-				<center style="margin-top:1.5em; line-height:150%">
-					<img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
-					<strong>Qt for WebAssembly: project_qt</strong>
-					<div id="qtstatus"></div>
-					<noscript>JavaScript is disabled. Please enable JavaScript to use this application.</noscript>
-				</center>
-			</figure>
-			<canvas id="qtcanvas" oncontextmenu="event.preventDefault()" contenteditable="true"></canvas>
+  </head>
+  <body onload="init()">
+	  <div class="left">
+    <figure style="overflow:visible;" id="qtspinner">
+      <center style="margin-top:1.5em; line-height:150%">
+        <img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
+        <strong>Qt for WebAssembly: project_qt</strong>
+        <div id="qtstatus"></div>
+        <noscript>JavaScript is disabled. Please enable JavaScript to use this application.</noscript>
+      </center>
+    </figure>
+    <canvas id="qtcanvas" oncontextmenu="event.preventDefault()" contenteditable="true"></canvas>
 
-			<script type='text/javascript'>
-				function init() {
-					var spinner = document.querySelector('#qtspinner');
-					var canvas = document.querySelector('#qtcanvas');
-					var status = document.querySelector('#qtstatus')
+    <script type='text/javascript'>
+        function init() {
+          var spinner = document.querySelector('#qtspinner');
+          var canvas = document.querySelector('#qtcanvas');
+          var status = document.querySelector('#qtstatus')
 
-					var qtLoader = QtLoader({
-						canvasElements: [canvas],
-						showLoader: function(loaderStatus) {
-							spinner.style.display = 'block';
-							canvas.style.display = 'none';
-							status.innerHTML = loaderStatus + "...";
-						},
-						showError: function(errorText) {
-							status.innerHTML = errorText;
-							spinner.style.display = 'block';
-							canvas.style.display = 'none';
-						},
-						showExit: function() {
-							status.innerHTML = "Application exit";
-							if (qtLoader.exitCode !== undefined)
-								status.innerHTML += " with code " + qtLoader.exitCode;
-							if (qtLoader.exitText !== undefined)
-								status.innerHTML += " (" + qtLoader.exitText + ")";
-							spinner.style.display = 'block';
-							canvas.style.display = 'none';
-						},
-						showCanvas: function() {
-							spinner.style.display = 'none';
-							canvas.style.display = 'block';
-						},
-					});
-					qtLoader.loadEmscriptenModule("project_qt");
-				}
-			</script>
-			<script type="text/javascript" src="qtloader.js"></script>
-		</div>
-
-		<div class="right">
-			<button id="getSummaries">get summaries</button><br>
-			<script>
-				// 	// getSummaries.onclick = function handlePrintString(ptr: number, len: number) {
-			function handlePrintString(ptr, len) {
-			  const view = new Uint8Array(memory.buffer, 0, 100000000);
-			  let string = '';
-			  for (let i = 0; i < len; i++) {
-			    string += String.fromCharCode(view[i]);
-			  }
-			  console.log(string);
-			}
-			
-			getSummaries.onclick = handlePrintString(0, 100000000) 
-			
-			
-			WebAssembly.instantiate(0b00001111010101001010111, { _jsPrintString: handlePrintString }).then((result) => {
-			  result.instance.exports._print();
-			});
+          var qtLoader = QtLoader({
+              canvasElements : [canvas],
+              showLoader: function(loaderStatus) {
+                  spinner.style.display = 'block';
+                  canvas.style.display = 'none';
+                  status.innerHTML = loaderStatus + "...";
+              },
+              showError: function(errorText) {
+                  status.innerHTML = errorText;
+                  spinner.style.display = 'block';
+                  canvas.style.display = 'none';
+              },
+              showExit: function() {
+                  status.innerHTML = "Application exit";
+                  if (qtLoader.exitCode !== undefined)
+                      status.innerHTML += " with code " + qtLoader.exitCode;
+                  if (qtLoader.exitText !== undefined)
+                      status.innerHTML += " (" + qtLoader.exitText + ")";
+                  spinner.style.display = 'block';
+                  canvas.style.display = 'none';
+              },
+              showCanvas: function() {
+                  spinner.style.display = 'none';
+                  canvas.style.display = 'block';
+              },
+          });
+          qtLoader.loadEmscriptenModule("project_qt");
+      }
+    </script>
+    <script type="text/javascript" src="qtloader.js"></script>
+	</div>
+	
+	<div class="right">
+		<button id="getSummaries">get summaries</button><br>
+		<script>
+			(async () => {
+			    const response = await fetch("project_qt.wasm");
+			    const file = await response.arrayBuffer();
+			    const wasm = await WebAssembly.instantiate(file);
+			    const { memory, jsPrintString, print } = wasm.instance.exports;
+				const plaintext = "helloworld";
+				const myArray = new Uint8Array(memory.buffer, 0, 1000000000000000000000000000000);
+				print();
+				console.log(myArray);
 		</script>
 		</div>
-
-	</body>
+  </body>
 </html>
 <script type="module" src="./main.js"></script>
 <link href="./style.css" rel="stylesheet">
